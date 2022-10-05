@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>685258257596-uofsk4ekdvt5a56nq0d6miamuvt46k1j.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.685258257596-uofsk4ekdvt5a56nq0d6miamuvt46k1j</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD_zCKx4PkfZldKs3vuMk1Zd-sLUGNBw1A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>685258257596</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.greatestMensaAppEverXxl</string>
+	<key>PROJECT_ID</key>
+	<string>the-greatest-mensa-app-ever</string>
+	<key>STORAGE_BUCKET</key>
+	<string>the-greatest-mensa-app-ever.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:685258257596:ios:7258aeeb04c1bfdaa08cb9</string>
+</dict>
+</plist>

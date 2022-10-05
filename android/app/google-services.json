@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "685258257596",
+    "project_id": "the-greatest-mensa-app-ever",
+    "storage_bucket": "the-greatest-mensa-app-ever.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685258257596:android:3ed7c4fb1028c6e9a08cb9",
+        "android_client_info": {
+          "package_name": "com.example.greatest_mensa_app_ever_xxl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685258257596-9374urnttv3eql42o8peg7d279jhob1g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQR_N1V5_ejqEM-xUfB0lJcwWojVQXcB8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685258257596-9374urnttv3eql42o8peg7d279jhob1g.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "685258257596-uofsk4ekdvt5a56nq0d6miamuvt46k1j.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.greatestMensaAppEverXxl"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
