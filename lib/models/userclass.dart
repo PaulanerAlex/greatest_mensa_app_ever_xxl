@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
-  final String id;
+  String id;
   final String username;
   final String firstname;
   final String lastname;
@@ -25,7 +25,15 @@ class User {
     );
   }
 
-  Map<String, dynamic> toJson(User instance) {
+  factory User.fromSnapshot(DocumentSnapshot snapshot) {
+    final newUser = User.fromJson(snapshot.data() as Map<String, dynamic>);
+    newUser.id = snapshot.reference.id;
+    return newUser;
+  }
+
+  Map<String, dynamic> toJson() => _usersToJson(this);
+
+  _usersToJson(User instance) {
     return <String, dynamic>{
       'id': instance.id,
       'firstname': instance.firstname,
