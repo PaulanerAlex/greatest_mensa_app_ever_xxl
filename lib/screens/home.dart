@@ -22,20 +22,29 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  UserDataRepo db = UserDataRepo();
+
+  Future<String> _addUserData() async {
+    User user = User(
+        email: 'hussain.schrammbrater@küchengeschirr24.com',
+        username: 'hossihussi',
+        firstname: 'Hussain',
+        lastname: 'Schrammbrater',
+        admin: true,
+        registeredSince: DateTime.now());
+    return await db.addData(user);
+  }
+
   Future<List<User>> _getUserData() async {
-    UserDataRepo db = UserDataRepo();
     List<User> users = await db.getData();
     return users;
   }
 
   Widget _buildList(context, snapshot) {
-    print(snapshot[0].username.toString() + 'Test2');
     return ListView.builder(
       itemCount: snapshot.length,
       itemBuilder: (context, index) {
         User user = snapshot[index];
-        print(user.username);
-        print('TEST');
         return Column(
           children: [
             Text(user.username),
@@ -64,7 +73,9 @@ class _MyHomePageState extends State<MyHomePage> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _addUserData();
+        },
         tooltip: 'Increment',
         child: const Icon(Icons.group_add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

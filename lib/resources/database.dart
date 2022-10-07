@@ -42,9 +42,13 @@ class UserDataRepo {
     return userList;
   }
 
-  // Future<bool> addData() async {
-  //   // TODO: Implement
-  //   db.collection()
-  //   return ;
-  // }
+  Future<String> addData(User user) async {
+    // TODO: Implement
+    print(user.toString() + 'WASSERRATTE');
+    print(user.toJson().toString() + ' BAUM');
+    DocumentReference doc = await db.collection('users').add(user
+        .toJson()); // FIXME: potential bug: datetime to timestamp conversion
+
+    return doc.id;
+  }
 }

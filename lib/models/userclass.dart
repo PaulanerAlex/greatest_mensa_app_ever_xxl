@@ -7,7 +7,7 @@ class User {
   final String lastname;
   final String email;
   final String? password;
-  final DateTime? registeredSince;
+  DateTime? registeredSince;
   final bool? admin;
 
   User(
@@ -28,9 +28,6 @@ class User {
       email: json['email'] as String,
       registeredSince: (json['registeredSince'] as Timestamp).toDate(),
     );
-
-    print(user);
-
     return user;
   }
 
@@ -40,18 +37,45 @@ class User {
   //   return newUser;
   // }
 
-  Map<String, dynamic> toJson() => _usersToJson(this);
+  // Map<String, dynamic> toJson() => _usersToJson(this);
 
-  _usersToJson(User instance) {
-    return <String, dynamic>{
-      'id': instance.id,
-      'firstname': instance.firstname,
-      'lastname': instance.lastname,
-      'email': instance.email,
-      'password': instance.password,
-      'username': instance.username,
-      'registered_since': instance.registeredSince,
-    };
+  Map<String, dynamic> toJson() {
+    List<Map<String, dynamic>> varList = [];
+    if (id != null) {
+      varList.add({'id': id});
+    }
+    if (firstname != null) {
+      varList.add({'firstname': firstname});
+    }
+    if (lastname != null) {
+      varList.add({'lastname': lastname});
+    }
+    if (password != null) {
+      varList.add({'password': password});
+    }
+    if (email != null) {
+      varList.add({'email': email});
+    }
+    if (username != null) {
+      varList.add({'username': username});
+    }
+    if (registeredSince != null) {
+      varList.add({'registeredSince': registeredSince});
+    }
+    Map<String, dynamic> returnMap = Map();
+    for (var i in varList) {
+      returnMap.addAll(i);
+    }
+    return returnMap;
+    // return <String, dynamic>{
+    // 'id': instance.id,
+    // 'firstname': instance.firstname,
+    // 'lastname': instance.lastname,
+    // 'email': instance.email,
+    // 'password': instance.password,
+    // 'username': instance.username,
+    // 'registered_since': instance.registeredSince,
+    // };
   }
 
   @override
