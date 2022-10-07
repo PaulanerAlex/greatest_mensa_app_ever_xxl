@@ -22,23 +22,34 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final DataRepo repo = DataRepo();
+  Future<List<User>> _getUserData() async {
+    UserDataRepo db = UserDataRepo();
+    List<User> users = await db.getData();
+    return users;
+  }
 
-  Widget _buildList(context, List<DocumentSnapshot> snapshot) {
-    return ListView(
+  Widget _buildList(context, snapshot) {
+    print(snapshot[0].username.toString() + 'Test2');
+    return ListView.builder(
+      itemCount: snapshot.length,
+      itemBuilder: (context, index) {
+        User user = snapshot[index];
+        print(user.username);
+        print('TEST');
+        return Column(
+          children: [
+            Text(user.username),
+          ],
+        );
+      },
       padding: const EdgeInsets.only(top: 20),
-      children: snapshot.map((data) => _buildListItem(context, data)).toList(),
     );
   }
 
-  Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
-    final user = User.fromSnapshot(snapshot);
-    print(user.toString());
-
-    return ListTile(
-      title: Text('Test'),
-    );
-  }
+  // Widget _buildListItem(BuildContext context, DocumentSnapshot snapshot) {
+  //   // final user = User.fromSnapshot(snapshot);
+  //   // print(user.toString());
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -46,20 +57,11 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            StreamBuilder<QuerySnapshot>(
-              stream: repo.getStream(),
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) return CircularProgressIndicator();
-
-                return _buildList(context, snapshot.data?.docs ?? []);
-              },
-            ),
-          ],
-        ),
+      body: FutureBuilder(
+        future: _getUserData(),
+        builder: (context, snapshot) {
+          return _buildList(context, snapshot.data);
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {},

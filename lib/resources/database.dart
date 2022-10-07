@@ -26,12 +26,25 @@ import '../models/userclass.dart';
 //   }
 // }
 
-// class UserDataRepo {
-//   final db = FirebaseFirestore.instance;
+class UserDataRepo {
+  final db = FirebaseFirestore.instance;
 
-//   Future<User> getData() async {
-//     QuerySnapshot<Map<String, dynamic>> users = await db.collection('users').get();
-//     users.docs.asMap();
-//   }
+  Future<List<User>> getData() async {
+    QuerySnapshot<Map<String, dynamic>> users =
+        await db.collection('users').get();
+    List<User> userList = [];
+    for (var doc in users.docs) {
+      // print(doc.data());
+      User user = User.fromJson(doc.data());
+      userList.add(user);
+    }
+    // print(userList);
+    return userList;
+  }
 
-// }
+  // Future<bool> addData() async {
+  //   // TODO: Implement
+  //   db.collection()
+  //   return ;
+  // }
+}
