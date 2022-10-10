@@ -26,29 +26,29 @@ import '../models/userclass.dart';
 //   }
 // }
 
-class UserDataRepo {
-  final db = FirebaseFirestore.instance;
+// class UserDataRepo {
+//   final db = FirebaseFirestore.instance;
 
-  Future<List<User>> getData() async {
-    QuerySnapshot<Map<String, dynamic>> users =
-        await db.collection('users').get();
-    List<User> userList = [];
-    for (var doc in users.docs) {
-      // print(doc.data());
-      User user = User.fromJson(doc.data());
-      userList.add(user);
-    }
-    // print(userList);
-    return userList;
-  }
+//   Future<List<User>> getData() async {
+//     QuerySnapshot<Map<String, dynamic>> users =
+//         await db.collection('users').get();
+//     List<User> userList = [];
+//     for (var doc in users.docs) {
+//       // print(doc.data());
+//       User user = User.fromJson(doc.data());
+//       userList.add(user);
+//     }
+//     // print(userList);
+//     return userList;
+//   }
 
-  Future<String> addData(User user) async {
-    // TODO: Implement
-    print(user.toString() + 'WASSERRATTE');
-    print(user.toJson().toString() + ' BAUM');
-    DocumentReference doc = await db.collection('users').add(user
-        .toJson()); // FIXME: potential bug: datetime to timestamp conversion
+//   Future<String> addData(User user) async {
+//     // TODO: Implement
+//     print(user.toString() + 'WASSERRATTE');
+//     print(user.toJson().toString() + ' BAUM');
+//     DocumentReference doc = await db.collection('users').add(user
+//         .toJson()); // FIXME: potential bug: datetime to timestamp conversion
 
-    return doc.id;
-  }
-}
+//     return doc.id;
+//   }
+// }
