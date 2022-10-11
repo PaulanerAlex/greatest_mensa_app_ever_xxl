@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
+  // Future<bool>_loginUser() async {
+  //   return
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +17,7 @@ class LoginScreen extends StatelessWidget {
           children: <Widget>[
             Container(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                child: Text(
+                child: const Text(
                   'Log in',
                   style: TextStyle(fontSize: 40, fontFamily: 'noto sans'),
                 )),
@@ -21,8 +25,10 @@ class LoginScreen extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: TextField(
                 decoration: InputDecoration(
-                  fillColor: Colors.grey,
+                  filled: true,
+                  fillColor: Colors.grey[300],
                   border: OutlineInputBorder(
+                    borderSide: BorderSide.none, // no border but
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   labelText: 'Email',
@@ -34,7 +40,10 @@ class LoginScreen extends StatelessWidget {
               child: TextField(
                 obscureText: true,
                 decoration: InputDecoration(
+                  filled: true,
+                  fillColor: Colors.grey[300],
                   border: OutlineInputBorder(
+                    borderSide: BorderSide.none, // no border but
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   labelText: 'Password',

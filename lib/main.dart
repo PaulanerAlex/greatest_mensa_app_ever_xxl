@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/firebase_options.dart';
+import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/login.dart';
 
 void main() async {
@@ -16,6 +17,9 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
+  Future<bool> _checkLoginState() async {
+    return await Auth().checkLoginState();
+  }
 
   // This widget is the root of your application.
   @override
@@ -34,7 +38,11 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
+      home: FutureBuilder(
+        future: _checkLoginState(),
+        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
+            snapshot.data! ? MyHomePage() : LoginScreen(),
+      ), // TODO: Add screen chooser based on login state
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

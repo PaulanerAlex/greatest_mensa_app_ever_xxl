@@ -47,4 +47,16 @@ class Auth {
     await auth.signOut();
     return true;
   }
+
+  Future<bool> checkLoginState() async {
+    bool signedIn = false;
+    auth.authStateChanges().listen((User? user) {
+      if (user == null) {
+        signedIn = false;
+      } else {
+        signedIn = true;
+      }
+    });
+    return signedIn;
+  }
 }
