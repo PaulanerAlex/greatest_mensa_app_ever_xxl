@@ -1,18 +1,23 @@
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
+import 'package:greatest_mensa_app_ever_xxl/screens/login.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
 
   final _emailFieldController = TextEditingController();
   final _passwordFocusNode = FocusNode();
   final _passwordFieldController = TextEditingController();
 
-  Future<bool> _loginUser() async {
+  Future<bool> _registerUser() async {
+    print('test');
     try {
-      UserCredential user = await Auth().signInWithPassword(
-          _passwordFieldController.text, _emailFieldController.text);
+      UserCredential user = await Auth().registerWithPassword(
+          _emailFieldController.text, _passwordFieldController.text);
+      print(user);
     } catch (e) {
       return false; // TODO: add error logging
     }
@@ -31,7 +36,7 @@ class LoginScreen extends StatelessWidget {
             Container(
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
                 child: const Text(
-                  'Log in',
+                  'Register',
                   style: TextStyle(fontSize: 40, fontFamily: 'noto sans'),
                 )),
             Container(
@@ -56,7 +61,9 @@ class LoginScreen extends StatelessWidget {
                 controller: _passwordFieldController,
                 focusNode: _passwordFocusNode,
                 obscureText: true,
-                onSubmitted: (value) => _loginUser(),
+                onSubmitted: (value) async {
+                  await _registerUser();
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[300],
@@ -76,25 +83,26 @@ class LoginScreen extends StatelessWidget {
                     minimumSize: const Size.fromHeight(50),
                   ),
                   child: const Text('Confirm'),
-                  onPressed: () {
-                    _loginUser();
+                  onPressed: () async {
+                    final cred = await FirebaseAuth.instance
+                        .createUserWithEmailAndPassword(
+                            email: 'email',
+                            password: 'asdkfpoivniaoASVLBN12354%%');
+                    print(cred.toString());
+                    // await _registerUser();
                   },
                 )),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: TextButton(
-                onPressed: () {}, // TODO: Add transition to register screen
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginScreen()));
+                }, // TODO: Add transition to register screen
                 child: Text(
-                  'Register for new account',
+                  'Already registered? Login',
                   style: TextStyle(color: Colors.grey[600]),
                 ),
-              ),
-            ),
-            TextButton(
-              onPressed: () {},
-              child: Text(
-                'Forgot Password?',
-                style: TextStyle(color: Colors.grey[600]),
               ),
             ),
           ],

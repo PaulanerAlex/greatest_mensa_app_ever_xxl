@@ -5,6 +5,7 @@ import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/firebase_options.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/login.dart';
+import 'package:greatest_mensa_app_ever_xxl/screens/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +19,11 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   Future<bool> _checkLoginState() async {
-    return await Auth().checkLoginState();
+    WidgetsFlutterBinding.ensureInitialized();
+    bool state = await Auth().checkLoginState();
+    print(state);
+    print('THIS WAS THE STATE');
+    return state;
   }
 
   // This widget is the root of your application.
@@ -41,8 +46,8 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: _checkLoginState(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
-            snapshot.data! ? MyHomePage() : LoginScreen(),
-      ), // TODO: Add screen chooser based on login state
+            snapshot.data! ? MyHomePage() : RegisterScreen(),
+      ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
