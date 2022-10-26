@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
+import 'package:greatest_mensa_app_ever_xxl/screens/register.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
@@ -83,7 +84,12 @@ class LoginScreen extends StatelessWidget {
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: TextButton(
-                onPressed: () {}, // TODO: Add transition to register screen
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RegisterScreen()));
+                }, // TODO: Add transition to register screen
                 child: Text(
                   'Register for new account',
                   style: TextStyle(color: Colors.grey[600]),

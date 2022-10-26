@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
   Future<bool> _checkLoginState() async {
     WidgetsFlutterBinding.ensureInitialized();
-    bool state = await Auth().checkLoginState();
-    print(state);
-    print('THIS WAS THE STATE');
-    return state;
+    bool auth_state = await Auth().checkLoginState();
+    print(auth_state);
+    print('THIS WAS THE auth_state');
+    return auth_state;
   }
 
   // This widget is the root of your application.
@@ -46,7 +46,9 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: _checkLoginState(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
-            snapshot.data! ? MyHomePage() : RegisterScreen(),
+            HomeScreen(),
+        // builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
+        //     snapshot.data! ? MyHomePage() : RegisterScreen(),
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

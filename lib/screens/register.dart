@@ -14,9 +14,13 @@ class RegisterScreen extends StatelessWidget {
 
   Future<bool> _registerUser() async {
     print('test');
+    String email = _emailFieldController.text;
+    String password = _passwordFieldController.text;
+    print(email);
+    print(password);
     try {
-      UserCredential user = await Auth().registerWithPassword(
-          _emailFieldController.text, _passwordFieldController.text);
+      UserCredential user =
+          await Auth().registerWithPassword(password, 'email@email.com');
       print(user);
     } catch (e) {
       return false; // TODO: add error logging
@@ -84,12 +88,7 @@ class RegisterScreen extends StatelessWidget {
                   ),
                   child: const Text('Confirm'),
                   onPressed: () async {
-                    final cred = await FirebaseAuth.instance
-                        .createUserWithEmailAndPassword(
-                            email: 'email',
-                            password: 'asdkfpoivniaoASVLBN12354%%');
-                    print(cred.toString());
-                    // await _registerUser();
+                    await _registerUser();
                   },
                 )),
             Container(

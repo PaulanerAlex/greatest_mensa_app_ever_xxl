@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:touchable/touchable.dart';
 
-class MyHomePage extends StatefulWidget {
+import '../widgets/mensa_path_painter.dart';
+
+class HomeScreen extends StatefulWidget {
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
   // how it looks.
@@ -11,10 +16,10 @@ class MyHomePage extends StatefulWidget {
   // always marked "final".
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomeScreenState extends State<HomeScreen> {
   // Future<String> _addUserData() async {
   //   User user = User(
   //       email: 'hussain.schrammbrater@küchengeschirr24.com',
@@ -57,10 +62,25 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text('Mensa-App-XXL-Extendet-Mega-Krass-Genial'),
       ),
-      body: Container(),
+      // body: Container(
+      //   // height: 500,
+      //   // width: 100,
+      //   child: SvgPicture.network('https://svgsilh.com/svg/576847.svg',
+      //       color: Colors.yellow),
+      // ),
+      body: SvgPicture.asset(
+        'mensa_layout.svg',
+        semanticsLabel: 'Mensa layout',
+      ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
+        onPressed: () {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text('Tap a table to indicate the others, where you sit.'),
+            ),
+          );
+        },
         child: const Icon(Icons.group_add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
