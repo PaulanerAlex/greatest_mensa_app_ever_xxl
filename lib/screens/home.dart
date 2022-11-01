@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:greatest_mensa_app_ever_xxl/resources/parse_svg.dart';
 import 'package:touchable/touchable.dart';
 
 import '../widgets/mensa_path_painter.dart';
@@ -62,24 +63,31 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Text('Mensa-App-XXL-Extendet-Mega-Krass-Genial'),
       ),
-      // body: Container(
-      //   // height: 500,
-      //   // width: 100,
-      //   child: SvgPicture.network('https://svgsilh.com/svg/576847.svg',
-      //       color: Colors.yellow),
+      body: FutureBuilder<MensaSvgModel>(
+          future: loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg'),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            return CanvasTouchDetector(
+              gesturesToOverride: [GestureType.onTapDown],
+              builder: (context) {
+                return CustomPaint(
+                  size: const Size.fromWidth(200),
+                  painter: MensaPainter(context: context, model: snapshot.data),
+                );
+              },
+            );
+          }),
+      // body: SvgPicture.asset(
+      // 'mensa_layout.svg',
+      // semanticsLabel: 'Mensa layout',
       // ),
-      body: SvgPicture.asset(
-        'mensa_layout.svg',
-        semanticsLabel: 'Mensa layout',
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content:
-                  Text('Tap a table to indicate the others, where you sit.'),
+              content: Text('Tap a table to tell other users where you sit.'),
             ),
           );
+          loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg');
         },
         child: const Icon(Icons.group_add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

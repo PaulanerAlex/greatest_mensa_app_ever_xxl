@@ -4,11 +4,11 @@ import 'package:svg_path_parser/svg_path_parser.dart';
 import 'package:touchable/touchable.dart';
 import 'package:xml/xml.dart';
 
-class BodyPainter extends CustomPainter {
+class MensaPainter extends CustomPainter {
   final BuildContext context;
   final dynamic model;
 
-  BodyPainter({
+  MensaPainter({
     required this.context,
     required this.model,
   });
@@ -21,33 +21,37 @@ class BodyPainter extends CustomPainter {
       ..style = PaintingStyle.fill
       ..strokeWidth = 8.0;
 
-    // Scale each path to match canvas size
-    var xScale = size.width / 222;
-    var yScale = size.height / 400;
+    // Scale each path to match canvas size FIXME: Potenital Bug here
+    // print(size.height);
+    // print(size.width);
+
+    // var xScale = size.width / 222;
+    var xScale = 200 / 222;
+    // var xScale = 1280.0;
+    // var yScale = size.height / 400;
+    var yScale = 300 / 400;
+    // var yScale = 904.0;
+
     final Matrix4 matrix4 = Matrix4.identity();
 
     matrix4.scale(xScale, yScale);
 
-    Path? bodyPath;
+    List<MensaSvgMember> generalParts = model.mensaParts;
+    print('test123');
 
-    List<MensaSvgMember> generalParts =
-        model.front ? model.generalFrontBodyParts : model.generalBackBodyParts;
+    generalParts.forEach((part) {
+      print('test1234');
 
-    generalParts.forEach((muscle) {
-      Path path = parseSvgPath(muscle.path);
+      Path path = parseSvgPath(part.path);
 
-      paint.color = Colors.white10;
-
-      if (model.selectedGeneralBodyPart != null &&
-          model.selectedGeneralBodyPart == muscle.name) {
-        paint.color = Colors.white30;
-      }
+      paint.color = model.color;
 
       myCanvas.drawPath(
         path.transform(matrix4.storage),
         paint,
         onTapDown: (details) {
-          model.selectGeneralBodyPart(muscle.name);
+          print('Touch down');
+          model.selectedTable(part.id);
         },
       );
     });
