@@ -37,24 +37,22 @@ class MensaPainter extends CustomPainter {
     matrix4.scale(xScale, yScale);
 
     List<MensaSvgMember> generalParts = model.mensaParts;
-    print('test123');
-
-    generalParts.forEach((part) {
-      print('test1234');
-
+    int count = 0;
+    for (MensaSvgMember part in generalParts) {
       Path path = parseSvgPath(part.path);
-
-      paint.color = model.color;
-
-      myCanvas.drawPath(
-        path.transform(matrix4.storage),
-        paint,
-        onTapDown: (details) {
-          print('Touch down');
-          model.selectedTable(part.id);
-        },
-      );
-    });
+      if (part.id != 'background') {
+        paint.color = part.color;
+        myCanvas.drawPath(
+          path.transform(matrix4.storage),
+          paint,
+          onTapDown: (details) {
+            print('Touch');
+            model.selectedTable = part.id;
+          },
+        );
+      }
+      count++;
+    }
   }
 
   @override

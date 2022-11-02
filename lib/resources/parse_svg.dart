@@ -21,18 +21,22 @@ Future<MensaSvgModel> loadSvgImage(
       String partName = element.getAttribute('id').toString();
       String partPath = element.getAttribute('d').toString();
       String partColor = element.getAttribute('fill').toString();
-
+      if (partName == 'null') {
+        partName = 'background';
+      }
       if (partColor == 'black') {
-        Color partColorObject = Colors.black;
+        partColorObject = Colors.black;
       } else if (partColor == 'white') {
-        Color partColorObject = Colors.white;
+        partColorObject = Colors.white;
       } else {
         partColor = partColor.replaceAll('#', '');
-        Color partColorObject = Color(int.parse('0x${'FF' + partColor}'));
+        print('BLA');
+        partColorObject = Color(int.parse('0x${'FF' + partColor}'));
       }
-
+      print(partColorObject);
       if (!partName.contains('path')) {
-        MensaSvgMember part = MensaSvgMember(id: partName, path: partPath);
+        MensaSvgMember part = MensaSvgMember(
+            id: partName, path: partPath, color: partColorObject!);
         if (back) {
           mensaParts.add(part);
         } else {
@@ -43,9 +47,8 @@ Future<MensaSvgModel> loadSvgImage(
   );
   MensaSvgModel model = MensaSvgModel(
     mensaParts: mensaParts,
-    selectedTable: null,
+    selectedTable: '',
     size: const Size.fromHeight(904),
-    color: partColorObject!,
   );
   return model;
 }
@@ -54,22 +57,22 @@ class MensaSvgModel {
   List<MensaSvgMember> mensaParts;
   String? selectedTable;
   Size size;
-  Color color;
 
   MensaSvgModel({
     required this.mensaParts,
     required this.selectedTable,
     required this.size,
-    required this.color,
   });
 }
 
 class MensaSvgMember {
   String id;
   String path;
+  Color color;
 
   MensaSvgMember({
     required this.id,
     required this.path,
+    required this.color,
   });
 }

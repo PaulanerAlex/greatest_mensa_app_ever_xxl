@@ -66,15 +66,22 @@ class _HomeScreenState extends State<HomeScreen> {
       body: FutureBuilder<MensaSvgModel>(
           future: loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg'),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
-            return CanvasTouchDetector(
-              gesturesToOverride: [GestureType.onTapDown],
-              builder: (context) {
-                return CustomPaint(
-                  size: const Size.fromWidth(200),
-                  painter: MensaPainter(context: context, model: snapshot.data),
-                );
-              },
-            );
+            if (snapshot.hasData) {
+              return CanvasTouchDetector(
+                gesturesToOverride: [GestureType.onTapDown],
+                builder: (context) {
+                  return CustomPaint(
+                    size: const Size.fromWidth(200),
+                    painter:
+                        MensaPainter(context: context, model: snapshot.data),
+                  );
+                },
+              );
+            } else if (snapshot.hasError) {
+              throw (snapshot.error!);
+            } else {
+              return Center(child: CircularProgressIndicator());
+            }
           }),
       // body: SvgPicture.asset(
       // 'mensa_layout.svg',
