@@ -47,6 +47,7 @@ class MensaPainter extends CustomPainter {
           paint,
           onTapDown: (details) {
             print('Touch');
+            print(part.id);
             model.selectedTable = part.id;
           },
         );
