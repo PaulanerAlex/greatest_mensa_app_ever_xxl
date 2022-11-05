@@ -41,7 +41,13 @@ class MensaPainter extends CustomPainter {
     for (MensaSvgMember part in generalParts) {
       Path path = parseSvgPath(part.path);
       if (part.id != 'background') {
+        print(model.selectedTable.toString());
+
         paint.color = part.color;
+        if (model.selectedTable != '' && part.id == model.selectedTable) {
+          print('WAAAAS');
+          paint.color = Colors.green;
+        }
         myCanvas.drawPath(
           path.transform(matrix4.storage),
           paint,
@@ -49,6 +55,7 @@ class MensaPainter extends CustomPainter {
             print('Touch');
             print(part.id);
             model.selectedTable = part.id;
+            paint.color = Colors.red;
           },
         );
       }

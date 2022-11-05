@@ -17,6 +17,8 @@ Future<MensaSvgModel> loadSvgImage(
   List<MensaSvgMember> mensaParts = [];
 
   Color? partColorObject;
+  int width = 0;
+  int height = 0;
 
   try {
     String imageWidth = paths.elementAt(0).toString();
@@ -25,9 +27,8 @@ Future<MensaSvgModel> loadSvgImage(
     int widthPos = contentList[0].indexOf('width="');
     int heightPos = contentList[0].indexOf('" height="');
     int heightEndPos = contentList[0].indexOf('" view');
-    int width = int.parse(contentList[0].substring(widthPos + 7, heightPos));
-    int height =
-        int.parse(contentList[0].substring(heightPos + 10, heightEndPos));
+    width = int.parse(contentList[0].substring(widthPos + 7, heightPos));
+    height = int.parse(contentList[0].substring(heightPos + 10, heightEndPos));
 
     print(width);
     print(height);
@@ -62,8 +63,9 @@ Future<MensaSvgModel> loadSvgImage(
   }
   MensaSvgModel model = MensaSvgModel(
     mensaParts: mensaParts,
-    selectedTable: '',
-    size: const Size.fromHeight(904),
+    selectedTable: mensaParts.first.id,
+    sizew: width,
+    sizeh: height,
   );
   return model;
 }
@@ -71,12 +73,14 @@ Future<MensaSvgModel> loadSvgImage(
 class MensaSvgModel {
   List<MensaSvgMember> mensaParts;
   String? selectedTable;
-  Size size;
+  int sizew;
+  int sizeh;
 
   MensaSvgModel({
     required this.mensaParts,
     required this.selectedTable,
-    required this.size,
+    required this.sizew,
+    required this.sizeh,
   });
 }
 

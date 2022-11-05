@@ -67,15 +67,30 @@ class _HomeScreenState extends State<HomeScreen> {
           future: loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg'),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.hasData) {
-              return CanvasTouchDetector(
-                gesturesToOverride: [GestureType.onTapDown],
-                builder: (context) {
-                  return CustomPaint(
-                    size: const Size.fromWidth(200),
-                    painter:
-                        MensaPainter(context: context, model: snapshot.data),
-                  );
-                },
+              return SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Container(
+                    constraints: BoxConstraints(
+                      minHeight: snapshot.data.sizeh,
+                      minWidth: snapshot.data.sizew,
+                    ),
+                    child: CanvasTouchDetector(
+                      gesturesToOverride: [
+                        GestureType.onTapDown,
+                      ],
+                      builder: (context) {
+                        print('BUILD');
+                        return CustomPaint(
+                          size: const Size.fromWidth(200),
+                          painter: MensaPainter(
+                              context: context, model: snapshot.data),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               );
             } else if (snapshot.hasError) {
               throw (snapshot.error!);
