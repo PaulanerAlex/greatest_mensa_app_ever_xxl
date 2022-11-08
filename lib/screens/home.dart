@@ -64,40 +64,44 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Mensa-App-XXL-Extendet-Mega-Krass-Genial'),
       ),
       body: FutureBuilder<MensaSvgModel>(
-          future: loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg'),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData) {
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Container(
-                    constraints: BoxConstraints(
-                      minHeight: snapshot.data.sizeh,
-                      minWidth: snapshot.data.sizew,
-                    ),
-                    child: CanvasTouchDetector(
-                      gesturesToOverride: [
-                        GestureType.onTapDown,
-                      ],
-                      builder: (context) {
-                        print('BUILD');
-                        return CustomPaint(
-                          size: const Size.fromWidth(200),
-                          painter: MensaPainter(
-                              context: context, model: snapshot.data),
-                        );
-                      },
-                    ),
+        future: loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg'),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              primary: true,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: SizedBox(
+                  // constraints: BoxConstraints(
+                  // minHeight: snapshot.data.sizeh,
+                  // minWidth: snapshot.data.sizew,
+                  // ),
+                  height: snapshot.data.sizeh,
+                  width: snapshot.data.sizew,
+                  child: CanvasTouchDetector(
+                    gesturesToOverride: [
+                      GestureType.onTapDown,
+                    ],
+                    builder: (context) {
+                      print('BUILD');
+                      return CustomPaint(
+                        size: const Size.fromWidth(200),
+                        painter: MensaPainter(
+                            context: context, model: snapshot.data),
+                      );
+                    },
                   ),
                 ),
-              );
-            } else if (snapshot.hasError) {
-              throw (snapshot.error!);
-            } else {
-              return Center(child: CircularProgressIndicator());
-            }
-          }),
+              ),
+            );
+          } else if (snapshot.hasError) {
+            throw (snapshot.error!);
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        },
+      ),
       // body: SvgPicture.asset(
       // 'mensa_layout.svg',
       // semanticsLabel: 'Mensa layout',
