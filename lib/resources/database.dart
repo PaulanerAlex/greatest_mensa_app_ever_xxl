@@ -1,50 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:greatest_mensa_app_ever_xxl/resources/firebase_options.dart';
 
-// class DataRepo {
-//   final CollectionReference collection = db.collection('users');
+class TableDataRepo {
+  // TODO: Add connection detection (not relevant for web release)
+  static final db = FirebaseFirestore.instance;
+  static CollectionReference<Map<String, dynamic>> collection =
+      db.collection('tables');
 
-//   Stream<QuerySnapshot> getStream() {
-//     collection.
-//     return collection.snapshots();
-//   }
+  static Future<QuerySnapshot> getAllData() async {
+    QuerySnapshot data = await collection.get();
+    return data;
+  }
 
-//   Future<DocumentReference> addUser(User user) {
-//     return collection.add(user.toJson());
-//   }
+  static Future<bool> setData(Map<String, dynamic> data) async {
+    try {
+      await collection.add(data);
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
 
-//   // 4
-//   void updateUser(User user) async {
-//     await collection.doc(user.id).update(user.toJson());
-//   }
+  // Future<DocumentReference> addUser(User user) {
+  // return collection.add(user.toJson());
+  // }
 
-//   // 5
-//   void deleteUser(User user) async {
-//     await collection.doc(user.id).delete();
-//   }
-// }
+  // 4
+  // void updateUser(User user) async {
+  //   await collection.doc(user.id).update(user.toJson());
+  // }
 
-// class UserDataRepo {
-//   final db = FirebaseFirestore.instance;
-
-//   Future<List<User>> getData() async {
-//     QuerySnapshot<Map<String, dynamic>> users =
-//         await db.collection('users').get();
-//     List<User> userList = [];
-//     for (var doc in users.docs) {
-//       // print(doc.data());
-//       User user = User.fromJson(doc.data());
-//       userList.add(user);
-//     }
-//     // print(userList);
-//     return userList;
-//   }
-
-//   Future<String> addData(User user) async {
-//     // TODO: Implement
-//     print(user.toString() + 'WASSERRATTE');
-//     print(user.toJson().toString() + ' BAUM');
-//     DocumentReference doc = await db.collection('users').add(user
-//         .toJson()); // FIXME: potential bug: datetime to timestamp conversion
-
-//     return doc.id;
-//   }
-// }
+  // // 5
+  // void deleteUser(User user) async {
+  //   await collection.doc(user.id).delete();
+  // }
+}
