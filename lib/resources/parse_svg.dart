@@ -7,7 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:xml/xml.dart';
 
 Future<MensaSvgModel> loadSvgImage(
-    {required bool back, required String svgPathKey}) async {
+    {required bool back,
+    required String svgPathKey,
+    required String user}) async {
   String generalString = await rootBundle.loadString(svgPathKey);
 
   XmlDocument document = XmlDocument.parse(generalString);
@@ -53,7 +55,7 @@ Future<MensaSvgModel> loadSvgImage(
     }
     if (!partName.contains('path')) {
       MensaSvgMember part =
-          MensaSvgMember(id: partName, path: partPath, color: partColorObject!);
+          MensaSvgMember(id: partName, path: partPath, color: partColorObject);
       if (back) {
         mensaParts.add(part);
       } else {
@@ -66,6 +68,7 @@ Future<MensaSvgModel> loadSvgImage(
     selectedTable: mensaParts.first.id,
     sizew: width,
     sizeh: height,
+    user: user,
   );
   return model;
 }
@@ -73,6 +76,7 @@ Future<MensaSvgModel> loadSvgImage(
 class MensaSvgModel {
   List<MensaSvgMember> mensaParts;
   String? selectedTable;
+  String? user;
   int sizew;
   int sizeh;
 
@@ -81,6 +85,7 @@ class MensaSvgModel {
     required this.selectedTable,
     required this.sizew,
     required this.sizeh,
+    required this.user,
   });
 }
 

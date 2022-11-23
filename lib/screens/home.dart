@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:greatest_mensa_app_ever_xxl/resources/database.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/parse_svg.dart';
 import 'package:touchable/touchable.dart';
 
@@ -21,6 +23,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Future<MensaSvgModel> _getDataAndImage(back, svgPathKey) async {
+    MensaSvgModel model = await loadSvgImage(
+        back: true, svgPathKey: 'mensa_layout.svg', user: 'test');
+    QuerySnapshot tableData = await TableDataRepo.getAllData();
+    return model;
+  }
   // Future<String> _addUserData() async {
   //   User user = User(
   //       email: 'hussain.schrammbrater@küchengeschirr24.com',
@@ -64,12 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Mensa-App-XXL-Extendet-Mega-Krass-Genial'),
       ),
       body: FutureBuilder<MensaSvgModel>(
-        future: loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg'),
+        future: _getDataAndImage(true, 'mensa_layout.svg'),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              primary: true,
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: SizedBox(
@@ -80,8 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: snapshot.data.sizeh,
                   width: snapshot.data.sizew,
                   child: CanvasTouchDetector(
-                    gesturesToOverride: [
+                    gesturesToOverride: const [
                       GestureType.onTapDown,
+                      // GestureType.onTapUp,
+                      // GestureType.onSecondaryTapDown,
                     ],
                     builder: (context) {
                       print('BUILD');
@@ -107,13 +116,19 @@ class _HomeScreenState extends State<HomeScreen> {
       // semanticsLabel: 'Mensa layout',
       // ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
+          bool data = await TableDataRepo.setData(<String, dynamic>{
+            'table_id': 'test',
+            'time': Timestamp.now(),
+            'user': 'paul'
+          });
+          print(data);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('Tap a table to tell other users where you sit.'),
             ),
           );
-          loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg');
+          // loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg');
         },
         child: const Icon(Icons.group_add),
       ), // This trailing comma makes auto-formatting nicer for build methods.

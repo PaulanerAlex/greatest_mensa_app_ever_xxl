@@ -13,9 +13,9 @@ class RegisterScreen extends StatelessWidget {
   final _passwordFieldController = TextEditingController();
 
   Future<bool> _registerUser() async {
-    print('test');
     String email = _emailFieldController.text;
     String password = _passwordFieldController.text;
+    print('TESTTTT');
     print(email);
     print(password);
     try {
@@ -23,6 +23,7 @@ class RegisterScreen extends StatelessWidget {
           await Auth().registerWithPassword(password, 'email@email.com');
       print(user);
     } catch (e) {
+      print(e);
       return false; // TODO: add error logging
     }
     // TODO: Add compatrison/overwriting of old credentials
@@ -80,17 +81,18 @@ class RegisterScreen extends StatelessWidget {
               ),
             ),
             Container(
-                height: 80,
-                padding: const EdgeInsets.all(20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                  ),
-                  child: const Text('Confirm'),
-                  onPressed: () async {
-                    await _registerUser();
-                  },
-                )),
+              height: 80,
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child: const Text('Confirm'),
+                onPressed: () async {
+                  await _registerUser();
+                },
+              ),
+            ),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: TextButton(

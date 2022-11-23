@@ -21,18 +21,4 @@ class TableDataRepo {
       return false;
     }
   }
-
-  // Future<DocumentReference> addUser(User user) {
-  // return collection.add(user.toJson());
-  // }
-
-  // 4
-  // void updateUser(User user) async {
-  //   await collection.doc(user.id).update(user.toJson());
-  // }
-
-  // // 5
-  // void deleteUser(User user) async {
-  //   await collection.doc(user.id).delete();
-  // }
 }

@@ -42,7 +42,6 @@ class MensaPainter extends CustomPainter {
       Path path = parseSvgPath(part.path);
       if (part.id != 'background') {
         print(model.selectedTable.toString());
-
         paint.color = part.color;
         if (model.selectedTable != '' && part.id == model.selectedTable) {
           print('WAAAAS');

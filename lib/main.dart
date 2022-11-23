@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
       home: FutureBuilder(
         future: _checkLoginState(),
         builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
-            HomeScreen(),
+            snapshot.data! ? HomeScreen() : LoginScreen(),
         // builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
         //     snapshot.data! ? MyHomePage() : RegisterScreen(),
       ),
