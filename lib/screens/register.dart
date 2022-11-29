@@ -11,6 +11,7 @@ class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
 
   final _emailFieldController = TextEditingController();
+  // final _userNameFieldController = TextEditingController();
   final _passwordFocusNode = FocusNode();
   final _passwordFieldController = TextEditingController();
 
@@ -21,7 +22,8 @@ class RegisterScreen extends StatelessWidget {
       UserCredential user = await Auth().registerWithPassword(password, email);
       return true;
     } catch (e) {
-      print(e); // TODO: add error logging
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(e.toString()))); // TODO: add error logging
       return false;
     }
     // TODO: Add comparison/overwriting of old credentials
@@ -58,6 +60,23 @@ class RegisterScreen extends StatelessWidget {
                 ),
               ),
             ),
+            // Container(
+            //   padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+            //   child: TextField(
+            //     controller: _userNameFieldController,
+            //     onSubmitted: (input) =>
+            //         FocusScope.of(context).requestFocus(_passwordFocusNode),
+            //     decoration: InputDecoration(
+            //       filled: true,
+            //       fillColor: Colors.grey[300],
+            //       border: OutlineInputBorder(
+            //         borderSide: BorderSide.none, // no border but
+            //         borderRadius: BorderRadius.circular(10.0),
+            //       ),
+            //       labelText: 'Username',
+            //     ),
+            //   ),
+            // ),
             Container(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: TextField(
@@ -65,7 +84,6 @@ class RegisterScreen extends StatelessWidget {
                 focusNode: _passwordFocusNode,
                 obscureText: true,
                 onSubmitted: (value) async {
-                  final nav = Navigator.of(context);
                   bool result = await _registerUser(context);
                   if (result) {
                     Navigator.push(context,
@@ -92,7 +110,11 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 child: const Text('Confirm'),
                 onPressed: () async {
-                  await _registerUser(context);
+                  bool result = await _registerUser(context);
+                  if (result) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  }
                 },
               ),
             ),

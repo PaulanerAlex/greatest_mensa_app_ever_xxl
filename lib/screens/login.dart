@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
+import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/register.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -11,9 +12,11 @@ class LoginScreen extends StatelessWidget {
   final _passwordFieldController = TextEditingController();
 
   Future<bool> _loginUser() async {
+    String email = _emailFieldController.text;
     try {
-      UserCredential user = await Auth().signInWithPassword(
-          _passwordFieldController.text, _emailFieldController.text);
+      UserCredential user =
+          await Auth().signInWithPassword(_passwordFieldController.text, email);
+      print(user);
     } catch (e) {
       print(e);
       return false; // TODO: add error logging
@@ -39,6 +42,7 @@ class LoginScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: TextField(
+                controller: _emailFieldController,
                 onSubmitted: (input) =>
                     FocusScope.of(context).requestFocus(_passwordFocusNode),
                 decoration: InputDecoration(
@@ -59,10 +63,11 @@ class LoginScreen extends StatelessWidget {
                 focusNode: _passwordFocusNode,
                 obscureText: true,
                 onSubmitted: (value) async {
-                  final nav = Navigator.of(context);
                   bool result = await _loginUser();
-                  if (result) {}
-                  ;
+                  if (result) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  }
                 },
                 decoration: InputDecoration(
                   filled: true,
@@ -83,8 +88,14 @@ class LoginScreen extends StatelessWidget {
                     minimumSize: const Size.fromHeight(50),
                   ),
                   child: const Text('Confirm'),
-                  onPressed: () {
-                    _loginUser();
+                  onPressed: () async {
+                    bool result = await _loginUser();
+                    if (result) {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    }
                   },
                 )),
             Container(
