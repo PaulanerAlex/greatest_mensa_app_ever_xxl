@@ -12,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
+  // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const MyApp());
 }
 
@@ -42,14 +42,23 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        useMaterial3: true,
       ),
       home: FutureBuilder(
-        future: _checkLoginState(),
-        builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
-            snapshot.data! ? HomeScreen() : LoginScreen(),
-        // builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
-        //     snapshot.data! ? MyHomePage() : RegisterScreen(),
-      ),
+          future: _checkLoginState(),
+          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Scaffold(backgroundColor: Colors.white);
+            }
+            if (snapshot.data!) {
+              return HomeScreen();
+            } else {
+              return LoginScreen();
+            }
+          }
+          // builder: (BuildContext context, AsyncSnapshot<bool> snapshot) =>
+          //     snapshot.data! ? MyHomePage() : RegisterScreen(),
+          ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

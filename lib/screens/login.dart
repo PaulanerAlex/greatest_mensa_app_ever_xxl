@@ -15,6 +15,7 @@ class LoginScreen extends StatelessWidget {
       UserCredential user = await Auth().signInWithPassword(
           _passwordFieldController.text, _emailFieldController.text);
     } catch (e) {
+      print(e);
       return false; // TODO: add error logging
     }
     // TODO: Add compatrison/overwriting of old credentials
@@ -57,7 +58,12 @@ class LoginScreen extends StatelessWidget {
                 controller: _passwordFieldController,
                 focusNode: _passwordFocusNode,
                 obscureText: true,
-                onSubmitted: (value) => _loginUser(),
+                onSubmitted: (value) async {
+                  final nav = Navigator.of(context);
+                  bool result = await _loginUser();
+                  if (result) {}
+                  ;
+                },
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: Colors.grey[300],

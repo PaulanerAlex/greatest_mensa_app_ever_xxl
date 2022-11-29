@@ -1,8 +1,10 @@
 import 'dart:html';
+import 'dart:js';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
+import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/login.dart';
 
 class RegisterScreen extends StatelessWidget {
@@ -12,22 +14,17 @@ class RegisterScreen extends StatelessWidget {
   final _passwordFocusNode = FocusNode();
   final _passwordFieldController = TextEditingController();
 
-  Future<bool> _registerUser() async {
+  Future<bool> _registerUser(BuildContext context) async {
     String email = _emailFieldController.text;
     String password = _passwordFieldController.text;
-    print('TESTTTT');
-    print(email);
-    print(password);
     try {
-      UserCredential user =
-          await Auth().registerWithPassword(password, 'email@email.com');
-      print(user);
+      UserCredential user = await Auth().registerWithPassword(password, email);
+      return true;
     } catch (e) {
-      print(e);
-      return false; // TODO: add error logging
+      print(e); // TODO: add error logging
+      return false;
     }
-    // TODO: Add compatrison/overwriting of old credentials
-    return true;
+    // TODO: Add comparison/overwriting of old credentials
   }
 
   @override
@@ -47,6 +44,7 @@ class RegisterScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: TextField(
+                controller: _emailFieldController,
                 onSubmitted: (input) =>
                     FocusScope.of(context).requestFocus(_passwordFocusNode),
                 decoration: InputDecoration(
@@ -67,7 +65,12 @@ class RegisterScreen extends StatelessWidget {
                 focusNode: _passwordFocusNode,
                 obscureText: true,
                 onSubmitted: (value) async {
-                  await _registerUser();
+                  final nav = Navigator.of(context);
+                  bool result = await _registerUser(context);
+                  if (result) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  }
                 },
                 decoration: InputDecoration(
                   filled: true,
@@ -89,7 +92,7 @@ class RegisterScreen extends StatelessWidget {
                 ),
                 child: const Text('Confirm'),
                 onPressed: () async {
-                  await _registerUser();
+                  await _registerUser(context);
                 },
               ),
             ),
