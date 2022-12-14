@@ -34,11 +34,12 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Container(
-                padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
-                child: const Text(
-                  'Log in',
-                  style: TextStyle(fontSize: 40, fontFamily: 'noto sans'),
-                )),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 70),
+              child: const Text(
+                'Log in',
+                style: TextStyle(fontSize: 40, fontFamily: 'noto sans'),
+              ),
+            ),
             Container(
               padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: TextField(

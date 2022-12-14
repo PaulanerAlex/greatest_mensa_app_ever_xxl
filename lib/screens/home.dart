@@ -17,15 +17,21 @@ class HomeScreen extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
+  String currentModel;
+  HomeScreen({this.currentModel = '1og.svg'});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState(currentModel);
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String currentModel;
+
+  _HomeScreenState(this.currentModel);
+
   Future<MensaSvgModel> _getDataAndImage(back, svgPathKey) async {
-    MensaSvgModel model = await loadSvgImage(
-        back: true, svgPathKey: 'mensa_layout.svg', user: 'test');
+    MensaSvgModel model =
+        await loadSvgImage(back: true, svgPathKey: currentModel, user: 'test');
     QuerySnapshot tableData = await TableDataRepo.getAllData();
     return model;
   }
@@ -72,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('Mensa-App-XXL-Extendet-Mega-Krass-Genial'),
       ),
       body: FutureBuilder<MensaSvgModel>(
-        future: _getDataAndImage(true, 'mensa_layout.svg'),
+        future: _getDataAndImage(true, currentModel),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
             return SingleChildScrollView(
@@ -115,22 +121,72 @@ class _HomeScreenState extends State<HomeScreen> {
       // 'mensa_layout.svg',
       // semanticsLabel: 'Mensa layout',
       // ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          bool data = await TableDataRepo.setData(<String, dynamic>{
-            'table_id': 'test',
-            'time': Timestamp.now(),
-            'user': 'paul'
-          });
-          print(data);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text('Tap a table to tell other users where you sit.'),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  currentModel = '1og.svg';
+                });
+                // ALTERNATIV:
+                // ----------------
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) =>
+                //             HomeScreen(currentModel: '1og.svg')));
+                // ----------------
+              }, // TODO: add function move up a floor
+              child: const Icon(Icons.move_down_rounded),
             ),
-          );
-          // loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg');
-        },
-        child: const Icon(Icons.group_add),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  currentModel = '2og.svg';
+                });
+                // ALTERNATIVELY:
+                // ---------------
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => HomeScreen(
+                //               currentModel: '2og.svg',
+                //             )));
+                // ---------------
+              }, // TODO: add function move up a floorch
+              child: const Icon(Icons.move_up_rounded),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            child: FloatingActionButton(
+              onPressed: () async {
+                bool data = await TableDataRepo.setData(
+                  <String, dynamic>{
+                    'table_id': 'test',
+                    'time': Timestamp.now(),
+                    'user': 'paul'
+                  },
+                );
+                print(data);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                        Text('Tap a table to tell other users where you sit.'),
+                  ),
+                );
+                // loadSvgImage(back: true, svgPathKey: 'mensa_layout.svg');
+              },
+              child: const Icon(Icons.group_add),
+            ),
+          ),
+        ],
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

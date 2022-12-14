@@ -47,6 +47,7 @@ class MensaPainter extends CustomPainter {
           print('WAAAAS');
           paint.color = Colors.green;
         }
+        print(paint.color);
         myCanvas.drawPath(
           path.transform(matrix4.storage),
           paint,
