@@ -12,19 +12,13 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  WidgetsFlutterBinding.ensureInitialized();
   // await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
-  Future<bool> _checkLoginState() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    bool auth_state = await Auth().checkLoginState();
-    print(auth_state);
-    print('THIS WAS THE auth_state');
-    return auth_state;
-  }
 
   // This widget is the root of your application.
   @override
@@ -44,13 +38,10 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         useMaterial3: true,
       ),
-      home: FutureBuilder(
-          future: _checkLoginState(),
-          builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Scaffold(backgroundColor: Colors.white);
-            }
-            if (snapshot.data!) {
+      home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (BuildContext context, AsyncSnapshot<User?> snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
               return HomeScreen();
             } else {
               return LoginScreen();

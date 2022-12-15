@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/database.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/parse_svg.dart';
 import 'package:touchable/touchable.dart';
@@ -167,6 +169,8 @@ class _HomeScreenState extends State<HomeScreen> {
             margin: EdgeInsets.symmetric(vertical: 10),
             child: FloatingActionButton(
               onPressed: () async {
+                await FirebaseAuth.instance.setPersistence(Persistence.NONE);
+                print('TEST');
                 bool data = await TableDataRepo.setData(
                   <String, dynamic>{
                     'table_id': 'test',

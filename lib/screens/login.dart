@@ -1,21 +1,36 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/register.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final _emailFieldController = TextEditingController();
   final _passwordFocusNode = FocusNode();
   final _passwordFieldController = TextEditingController();
+  bool _saveUserData = false;
 
   Future<bool> _loginUser() async {
     String email = _emailFieldController.text;
     try {
       UserCredential user =
           await Auth().signInWithPassword(_passwordFieldController.text, email);
+      try {
+        await FirebaseAuth.instance.setPersistence(
+            _saveUserData ? Persistence.LOCAL : Persistence.NONE);
+      } on UnimplementedError catch (e) {
+        print(e);
+      }
       print(user);
     } catch (e) {
       print(e);
@@ -82,23 +97,34 @@ class LoginScreen extends StatelessWidget {
               ),
             ),
             Container(
-                height: 80,
-                padding: const EdgeInsets.all(20),
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50),
-                  ),
-                  child: const Text('Confirm'),
-                  onPressed: () async {
-                    bool result = await _loginUser();
-                    if (result) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HomeScreen()));
-                    }
-                  },
-                )),
+              height: 80,
+              padding: const EdgeInsets.all(20),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                child: const Text('Confirm'),
+                onPressed: () async {
+                  bool result = await _loginUser();
+                  if (result) {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  }
+                },
+              ),
+            ),
+            kIsWeb
+                ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: CheckboxListTile(
+                      onChanged: (value) async {
+                        _saveUserData = value!;
+                      },
+                      value: _saveUserData,
+                      title: Text('remember user data for next logins'),
+                    ),
+                  )
+                : Container(),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: TextButton(

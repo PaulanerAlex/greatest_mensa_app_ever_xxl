@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:js';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:greatest_mensa_app_ever_xxl/resources/auth.dart';
 import 'package:greatest_mensa_app_ever_xxl/screens/home.dart';
@@ -14,12 +15,19 @@ class RegisterScreen extends StatelessWidget {
   // final _userNameFieldController = TextEditingController();
   final _passwordFocusNode = FocusNode();
   final _passwordFieldController = TextEditingController();
+  bool _saveUserData = false;
 
   Future<bool> _registerUser(BuildContext context) async {
     String email = _emailFieldController.text;
     String password = _passwordFieldController.text;
     try {
       UserCredential user = await Auth().registerWithPassword(password, email);
+      try {
+        await FirebaseAuth.instance.setPersistence(
+            _saveUserData ? Persistence.LOCAL : Persistence.NONE);
+      } on UnimplementedError catch (e) {
+        print(e);
+      }
       return true;
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -118,6 +126,18 @@ class RegisterScreen extends StatelessWidget {
                 },
               ),
             ),
+            kIsWeb
+                ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: CheckboxListTile(
+                      onChanged: (value) async {
+                        _saveUserData = value!;
+                      },
+                      value: _saveUserData,
+                      title: Text('remember user data for next logins'),
+                    ),
+                  )
+                : Container(),
             Container(
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: TextButton(
